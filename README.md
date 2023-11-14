@@ -1,6 +1,6 @@
 # Food Delivery - Build Maven Exercise
 
-In this exercise you job is to transform your OOP Food Delivery exercise to be a multi-module maven project.
+In this exercise your job is to transform OOP Food Delivery exercise to be a multi-module maven project.
 
 The project should have to following modules:
 
@@ -9,6 +9,8 @@ The project should have to following modules:
 | persistence | com.epam.training.food.data <br/> com.epam.training.food.domain | 
 | service | com.epam.training.food.service                                  |
 | application | all other packages                                              |
+
+Each module should contain source code of java packages it is defined in the table.
 
 # Solution hints
 
