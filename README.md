@@ -1,0 +1,20 @@
+# Food Delivery - Build Maven Exercise
+
+In this exercise you job is to transform your OOP Food Delivery exercise to be a multi-module maven project.
+
+The project should have to following modules:
+
+| Module | java packages to add                                            |
+| -------|-----------------------------------------------------------------|
+| persistence | com.epam.training.food.data <br/> com.epam.training.food.domain | 
+| service | com.epam.training.food.service                                  |
+| application | all other packages                                              |
+
+# Solution hints
+
+- Do not forget to specify pom packaging type for the parent pom.xml
+- Parent pom should contain only dependencyManagement, not dependencies.
+- Modules should refer to parent pom with relativePath tag.
+- Modules do not need to specify groupId and version, those are inherited from the parent.
+- Modules should not contain dependency versions. All versions should be specified with properties of the parent project. (dependency version on other modules can be given by ${project.version}).
+
