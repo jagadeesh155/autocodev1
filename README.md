@@ -4,11 +4,11 @@ In this exercise your job is to transform OOP Food Delivery exercise to be a mul
 
 The project should have to following modules:
 
-| Module | java packages to add                                            |
-| -------|-----------------------------------------------------------------|
-| persistence | com.epam.training.food.data <br/> com.epam.training.food.domain | 
-| service | com.epam.training.food.service                                  |
-| application | all other packages                                              |
+| Module | java packages to add                                              |
+| -------|-------------------------------------------------------------------|
+| persistence | com.epam.training.food.data <br /> com.epam.training.food.domain  | 
+| service | com.epam.training.food.service                                    |
+| application | all other packages                                                |
 
 Each module should contain source code of java packages it is defined in the table.
 
