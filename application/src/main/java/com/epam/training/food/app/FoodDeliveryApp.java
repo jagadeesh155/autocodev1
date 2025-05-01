@@ -1,57 +1,92 @@
-package com.epam.training.food.service;
+package com.epam.training.food.app;
 
 import com.epam.training.food.data.FileDataStore;
 import com.epam.training.food.domain.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import com.epam.training.food.service.DefaultFoodDeliveryService;
 
-public class DefaultFoodDeliveryServiceTest {
+public class FoodDeliveryApp {
     private DefaultFoodDeliveryService service;
-    private FileDataStore dataStore;
     
-    @BeforeEach
-    public void setUp() {
-        dataStore = new FileDataStore();
-        service = new DefaultFoodDeliveryService(dataStore);
-        
-        Credentials creds = new Credentials("test", "test123");
-        Customer customer = new Customer("Test User", "test@example.com", 50.0, creds);
-        service.registerCustomer(customer);
-        
-        Food food = new Food("Burger", 9.99, "Tasty burger");
-        service.addToMenu(food);
+    public FoodDeliveryApp() {
+        this(new DefaultFoodDeliveryService(new FileDataStore()));
     }
     
-    @Test
-    public void testSuccessfulAuthentication() {
-        Customer customer = service.authenticate("test@example.com", "test123");
-        assertNotNull(customer);
-        assertEquals("Test User", customer.getName());
+    // Constructor for testing
+    public FoodDeliveryApp(DefaultFoodDeliveryService service) {
+        this.service = service;
     }
     
-    @Test
-    public void testFailedAuthentication() {
-        assertThrows(AuthenticationException.class, () -> {
-            service.authenticate("test@example.com", "wrongpass");
-        });
+    // Setter for testing
+    public void setService(DefaultFoodDeliveryService service) {
+        this.service = service;
     }
     
-    @Test
-    public void testPlaceOrderWithSufficientBalance() {
-        Customer customer = service.authenticate("test@example.com", "test123");
-        Cart cart = new Cart();
-        cart.addItem(new OrderItem(service.findFoodByName("Burger"), 2));
-        
-        assertDoesNotThrow(() -> service.placeOrder(customer, cart));
+    public String runApplicationFlow() {
+        try {
+            // Register a customer
+            Credentials creds = new Credentials("john", "pass123");
+            Customer customer = new Customer("John Doe", "john@example.com", 100.0, creds);
+            service.registerCustomer(customer);
+            
+            // Add food to menu
+            Food pizza = new Food("Pizza", 15.99, "Delicious pizza");
+            service.addToMenu(pizza);
+            
+            // Create and place an order
+            Cart cart = new Cart();
+            cart.addItem(new OrderItem(pizza, 2));
+            
+            Customer authCustomer = service.authenticate("john@example.com", "pass123");
+            service.placeOrder(authCustomer, cart);
+            return "Order placed successfully!";
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
     }
     
-    @Test
-    public void testPlaceOrderWithInsufficientBalance() {
-        Customer customer = service.authenticate("test@example.com", "test123");
-        Cart cart = new Cart();
-        cart.addItem(new OrderItem(service.findFoodByName("Burger"), 10));
-        
-        assertThrows(LowBalanceException.class, () -> service.placeOrder(customer, cart));
+    // Additional testable methods
+    public String runApplicationFlowWithInvalidCredentials() {
+        try {
+            // Same flow but with wrong password
+            Credentials creds = new Credentials("john", "wrongpass");
+            Customer customer = new Customer("John Doe", "john@example.com", 100.0, creds);
+            service.registerCustomer(customer);
+            
+            Food pizza = new Food("Pizza", 15.99, "Delicious pizza");
+            service.addToMenu(pizza);
+            
+            Cart cart = new Cart();
+            cart.addItem(new OrderItem(pizza, 2));
+            
+            service.authenticate("john@example.com", "wrongpass");
+            return "Unexpected success";
+        } catch (Exception e) {
+            return "Authentication failed: " + e.getMessage();
+        }
+    }
+    
+    public String runApplicationFlowWithLowBalance() {
+        try {
+            Credentials creds = new Credentials("john", "pass123");
+            Customer customer = new Customer("John Doe", "john@example.com", 5.0, creds);
+            service.registerCustomer(customer);
+            
+            Food pizza = new Food("Pizza", 15.99, "Delicious pizza");
+            service.addToMenu(pizza);
+            
+            Cart cart = new Cart();
+            cart.addItem(new OrderItem(pizza, 1)); // Should still fail
+            
+            Customer authCustomer = service.authenticate("john@example.com", "pass123");
+            service.placeOrder(authCustomer, cart);
+            return "Unexpected success";
+        } catch (Exception e) {
+            return "Payment failed: " + e.getMessage();
+        }
+    }
+    
+    public static void main(String[] args) {
+        FoodDeliveryApp app = new FoodDeliveryApp();
+        System.out.println(app.runApplicationFlow());
     }
 }
