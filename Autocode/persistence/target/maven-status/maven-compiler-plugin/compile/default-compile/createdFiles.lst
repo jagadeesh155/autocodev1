@@ -1,0 +1,15 @@
+com\epam\training\food\data\OrderWriter.class
+com\epam\training\food\domain\Order.class
+com\epam\training\food\data\CustomerReader.class
+com\epam\training\food\domain\Credentials.class
+com\epam\training\food\domain\Customer$Builder.class
+com\epam\training\food\domain\Food.class
+com\epam\training\food\domain\Food$Builder.class
+com\epam\training\food\data\FoodReader.class
+com\epam\training\food\data\Reader.class
+com\epam\training\food\domain\OrderItem$Builder.class
+com\epam\training\food\data\FileDataStore.class
+com\epam\training\food\domain\OrderItem.class
+com\epam\training\food\data\DataStore.class
+com\epam\training\food\domain\Customer.class
+com\epam\training\food\domain\Cart.class
